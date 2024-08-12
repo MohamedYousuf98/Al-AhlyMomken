@@ -1,0 +1,269 @@
+<script>
+  // Sample location data
+  const locations = [
+      { title: "Fifth Settlement, New Cairo", lat: 30.034, lng: 31.451, description: "Some description here...", distance: "3.5 km", indications: "Directions", city_id: 1, area_id: 1 },
+      { title: "Rehab City, New Cairo", lat: 30.055, lng: 31.456, description: "Some description here...", distance: "3.5 km", indications: "Directions", city_id: 1, area_id: 1 },
+      { title: "Madinaty, New Cairo", lat: 29.985, lng: 31.648, description: "Some description here...", distance: "3.5 km", indications: "Directions", city_id: 1, area_id: 1 },
+      { title: "Al-Azhar, Old Cairo", lat: 30.047, lng: 31.262, description: "Some description here...", distance: "3.5 km", indications: "Directions", city_id: 2, area_id: 2 },
+      { title: "El-Manial, Old Cairo", lat: 30.047, lng: 31.244, description: "Some description here...", distance: "3.5 km", indications: "Directions", city_id: 2, area_id: 2 },
+      { title: "Sayyida Zeinab, Old Cairo", lat: 30.050, lng: 31.261, description: "Some description here...", distance: "3.5 km", indications: "Directions", city_id: 2, area_id: 2 },
+      // Add more locations as needed
+  ];
+  
+  let map;
+  let markers = [];
+  
+  function initMap() {
+      map = new google.maps.Map(document.getElementById("map"), {
+          center: { lat: 30.0444, lng: 31.2357 }, // Default center for Cairo
+          zoom: 4, // Default zoom level
+      });
+  
+      // Initialize markers for all locations
+      addMarkersFromList(locations);
+  
+      // Observer for dynamically adding new location items
+      const observer = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+              if (mutation.type === 'childList' && mutation.target.id === 'locations') {
+                  clearMarkers(); // Clear previous markers
+                  addMarkersFromList(locations); // Add markers for filtered locations
+                  adjustMapBounds(); // Adjust map bounds to fit all markers
+              }
+          });
+      });
+  
+      observer.observe(document.getElementById('locations'), {
+          childList: true,
+          subtree: true
+      });
+  
+      // Event listener for location-item clicks
+      document.querySelectorAll('.location-item').forEach(item => {
+          item.addEventListener('click', function () {
+              const lat = parseFloat(item.getAttribute('data-lat'));
+              const lng = parseFloat(item.getAttribute('data-lng'));
+              const title = item.getAttribute('data-title');
+              highlightLocation({ lat, lng }, title);
+          });
+      });
+  
+      // Event listener for search input changes
+      document.getElementById('searchInputmaps').addEventListener('input', searchLocations);
+  
+      // Event listener for city select changes
+      document.getElementById('citySelect').addEventListener('change', function() {
+          const selectedCity = this.value;
+          const areas = getAreasForCity(selectedCity);
+          populateAreaDropdown(areas);
+          searchLocations(); // Trigger search when city changes
+      });
+  
+      // Event listener for area select changes
+      document.getElementById('areaSelect').addEventListener('change', function() {
+          searchLocations(); // Trigger search when area changes
+      });
+  
+      // Adjust map bounds initially
+      adjustMapBounds();
+  }
+  
+  function addMarkersFromList(locations) {
+      locations.forEach(location => {
+          addMarker({ lat: location.lat, lng: location.lng }, location.title);
+      });
+  }
+  
+  function addMarker(location, title) {
+    const svgMarker = {
+        path: "M19 9A7 7 0 1 0 5 9c0 1.387.409 2.677 1.105 3.765h-.008L12 22l5.903-9.235h-.007A6.971 6.971 0 0 0 19 9m-7 3a3 3 0 1 1 0-6a3 3 0 0 1 0 6",
+        fillColor: "#f7b36a",
+        fillOpacity: 1,
+        strokeColor: "#fca446",
+        strokeWeight: 2,
+        scale: 1.5, 
+        anchor: new google.maps.Point(12, 24), 
+    };
+
+    const marker = new google.maps.Marker({
+        position: location,
+        map,
+        title: title,
+        icon: svgMarker,
+    });
+
+    markers.push(marker);
+}
+
+
+  function clearMarkers() {
+      markers.forEach(marker => {
+          marker.setMap(null);
+      });
+      markers = [];
+  }
+  
+  function highlightLocation(location, title) {
+      map.setCenter(location);
+      map.setZoom(12); // Adjust zoom level as needed
+      markers.forEach(marker => {
+          if (marker.getTitle() === title) {
+              marker.setAnimation(google.maps.Animation.BOUNCE);
+          } else {
+              marker.setAnimation(null);
+          }
+      });
+  }
+  
+  function adjustMapBounds() {
+      if (markers.length === 0) return;
+  
+      const bounds = new google.maps.LatLngBounds();
+      markers.forEach(marker => {
+          bounds.extend(marker.getPosition());
+      });
+      map.fitBounds(bounds);
+  }
+  
+  // Function to perform location filtering based on search criteria
+  function searchLocations() {
+      const searchTerm = document.getElementById('searchInputmaps').value.toLowerCase();
+      const cityId = document.getElementById('citySelect').value;
+      const areaId = document.getElementById('areaSelect').value;
+  
+      const filteredLocations = locations.filter(location => {
+          const titleMatch = location.title.toLowerCase().includes(searchTerm);
+          const cityMatch = !cityId || location.city_id === parseInt(cityId);
+          const areaMatch = !areaId || location.area_id === parseInt(areaId);
+          return titleMatch && cityMatch && areaMatch;
+      });
+  
+      displayLocations(filteredLocations); // Display filtered locations
+  }
+  
+  // Function to display locations in the list
+  function displayLocations(locations) {
+      const locationsContainer = document.getElementById('locations');
+      locationsContainer.innerHTML = '';
+  
+      locations.forEach(location => {
+          const locationDiv = document.createElement('div');
+          locationDiv.classList.add('location-item');
+          locationDiv.setAttribute('data-lat', location.lat);
+          locationDiv.setAttribute('data-lng', location.lng);
+          locationDiv.setAttribute('data-title', location.title);
+          locationsContainer.innerHTML = '';
+
+locations.forEach(location => {
+    const locationDiv = document.createElement('div');
+    locationDiv.classList.add('location-item');
+    locationDiv.dataset.lat = location.lat;
+    locationDiv.dataset.lng = location.lng;
+    locationDiv.dataset.title = location.title;
+
+    const locationMeta = document.createElement('div');
+    locationMeta.classList.add('location-meta');
+
+    const locationText = document.createElement('div');
+    locationText.classList.add('location-text');
+
+    const title = document.createElement('h5');
+    title.textContent = location.title;
+    locationText.appendChild(title);
+
+    const description = document.createElement('p');
+    description.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 32 32">
+            <path fill="currentColor" d="M16 18a5 5 0 1 1 5-5a5.006 5.006 0 0 1-5 5m0-8a3 3 0 1 0 3 3a3.003 3.003 0 0 0-3-3"/>
+            <path fill="currentColor" d="m16 30l-8.436-9.949a35 35 0 0 1-.348-.451A10.9 10.9 0 0 1 5 13a11 11 0 0 1 22 0a10.9 10.9 0 0 1-2.215 6.597l-.001.003s-.3.394-.345.447ZM8.813 18.395s.233.308.286.374L16 26.908l6.91-8.15c.044-.055.278-.365.279-.366A8.9 8.9 0 0 0 25 13a9 9 0 1 0-18 0a8.9 8.9 0 0 0 1.813 5.395"/>
+        </svg>
+        ${location.description}
+    `;
+    locationText.appendChild(description);
+
+    locationMeta.appendChild(locationText);
+
+    const distance = document.createElement('span');
+    distance.classList.add('location-distance');
+    distance.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m9.706 12.781l-5.316-.953a2.085 2.085 0 0 1-.167-3.96l14.11-4.992a2.084 2.084 0 0 1 2.673 2.673l-4.992 14.386a2.084 2.084 0 0 1-3.91-.098l-.914-5.572a2.015 2.015 0 0 0-1.484-1.484m5.571-3.979l-4.579 4.579"/>
+        </svg>
+        ${location.distance}
+    `;
+    locationMeta.appendChild(distance);
+
+    const indications = document.createElement('span');
+    indications.classList.add('location-indications');
+    indications.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16.852 5.68c-.678-.827-1.018-1.24-1.48-1.46C14.907 4 14.377 4 13.318 4H8c-.943 0-1.414 0-1.707.293S6 5.057 6 6v3c0 .943 0 1.414.293 1.707S7.057 11 8 11h5.319c1.059 0 1.589 0 2.052-.22s.803-.633 1.48-1.46l.27-.326C17.706 8.28 18 7.922 18 7.5s-.293-.78-.88-1.494zM10 11v10m0-18v1M6 21h8" color="currentColor"/>
+        </svg>
+        ${location.indications}
+    `;
+    locationMeta.appendChild(indications);
+
+    locationDiv.appendChild(locationMeta);
+    locationsContainer.appendChild(locationDiv);
+});
+
+      });
+  
+      // Re-attach click event listeners for newly displayed location items
+      document.querySelectorAll('.location-item').forEach(item => {
+          item.addEventListener('click', function () {
+              const lat = parseFloat(item.getAttribute('data-lat'));
+              const lng = parseFloat(item.getAttribute('data-lng'));
+              const title = item.getAttribute('data-title');
+              highlightLocation({ lat, lng }, title);
+          });
+      });
+  }
+  
+  // Function to get areas based on selected city (dummy implementation)
+  function getAreasForCity(city) {
+      switch(city) {
+          case "1":
+              return ["Fifth Settlement", "Rehab City", "Madinaty"];
+          case "2":
+              return ["Al-Azhar", "El-Manial", "Sayyida Zeinab"];
+          
+          default:
+              return [];
+      }
+  }
+  
+  // Function to populate area dropdown based on areas array
+function populateAreaDropdown(areas) {
+    const areaSelect = document.getElementById('areaSelect');
+    areaSelect.innerHTML = ''; // Clear previous options
+
+    // Add default disabled option
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = 'Area';
+    defaultOption.disabled = true;
+    defaultOption.selected = true;
+    areaSelect.appendChild(defaultOption);
+
+    // Add options for each area
+    areas.forEach(area => {
+        const option = document.createElement('option');
+        option.value = area;
+        option.textContent = area;
+        areaSelect.appendChild(option);
+    });
+}
+
+// Event listener for area select changes
+document.getElementById('areaSelect').addEventListener('change', function () {
+    // searchLocations(); // Trigger search when area changes
+});
+
+  
+  // Initial population of area dropdown based on default city selection
+  const defaultCity = document.getElementById('citySelect').value;
+  const defaultAreas = getAreasForCity(defaultCity);
+  populateAreaDropdown(defaultAreas);
+</script>
+  
