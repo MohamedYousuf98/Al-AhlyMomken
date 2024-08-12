@@ -110,3 +110,57 @@ export const fetchPaymentSolutionData = async (): Promise<any> => {
   }
 };
 
+
+
+
+export const fetchData = async () => {
+  try {
+    const response = await fetch('https://d30e66be-80b3-4ca0-82a3-e473ba6138c0.mock.pstmn.io/api/v1/our-story', {
+      headers: {
+        'Accept-Language': 'en',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('API response:', data);
+
+    if (data && data.data) {
+      return data.data;
+    } else {
+      throw new Error('Invalid data structure');
+    }
+
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return {
+      get_our_story: { title: '', description: '', subtitle: '',  image: '' },
+      get_our_Quate: { title: '', description: '', image: '' },
+      get_Our_mission: { title: '', description: '', image: '' },
+      get_What_WeDo: { title: '', description: '', image: '' },
+      our_missions: { title: '', description: '' },
+      our_values: { title: '', description: '' },
+      get_What_WeAre: { title: '', description: '', image: '' },
+    };
+  }
+};
+
+
+
+
+
+export const fetchBrands = async (): Promise<string[]> => {
+  try {
+    const response = await fetch('https://d30e66be-80b3-4ca0-82a3-e473ba6138c0.mock.pstmn.io/api/v1/partners');
+    const data = await response.json();
+    return data.data.brands.map((brand: { image: string }) => brand.image);
+  } catch (error) {
+    console.error('Failed to fetch brands', error);
+    return [];
+  }
+};
+
+

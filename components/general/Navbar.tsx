@@ -348,7 +348,7 @@ const Navbar: React.FC = () => {
               {dropdown === 'business' && (
                 <div className="dropdown-menu show dropdown-columns">
                   <div className="dropdown-column-business">
-                  <Link href="/" className="dropdown-item">
+                  <Link href="/story" className="dropdown-item">
                       <FontAwesomeIcon icon={faCaretRight} />  Our Story
                     </Link>
                     

@@ -70,7 +70,7 @@ const PaymentServices = styled.div`
 const ServicesTitle = styled.h2`
   font-size: 35px;
   font-weight: 700;
-  margin-bottom: 40px;
+  margin-bottom: 60px;
   color: #00816D;
 `;
 
@@ -83,7 +83,6 @@ const ServiceImage = styled.img`
   height: 312px;
   border-radius: 30px;
   transition: transform 0.7s ease;
-  transform-style: preserve-3d;
   margin-bottom: 18px;
 
   &:hover {

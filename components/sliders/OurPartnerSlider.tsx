@@ -1,32 +1,35 @@
-"use client"; 
+"use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Slider from 'react-slick';
 import styled from 'styled-components';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { fetchBrands } from '@/utils/api'; 
 
 const FullWidthSlider = styled.div`
-  overflow: hidden; 
-  padding: 0px 0; 
+  overflow: hidden;
+  padding: 0px 0;
   text-align: center;
 
   .slick-slide {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0px; 
+    padding: 0px;
   }
 
   .slick-slide img {
-    height: 100px; 
+    height: 100px;
     width: 111px;
     object-fit: contain;
-    margin-bottom:20px;
+    margin-bottom: 20px;
   }
-  .slick-slide:focus img{
-    border:none !important;
+  .slick-slide:focus img {
+    border: none !important;
+    text-decoration:none !important;
   }
+
 `;
 
 const Title = styled.h2`
@@ -37,6 +40,7 @@ const Title = styled.h2`
   margin-bottom: 50px;
   margin-top: 15px;
 `;
+
 
 const sliderSettings = {
   infinite: true,
@@ -82,18 +86,18 @@ const sliderSettings = {
   ],
 };
 
+
 const OurPartnerSlider: React.FC = () => {
-  const images = [
-    '/orange.png',
-    '/vodafone.png',
-    '/orman.png',
-    '/etisalatnew.png',
-    '/masr elkhir.png',
-    '/pr-card.png',
-    '/yacoub.png',
-    '/we.png',
-    '/talabat.png',
-  ];
+  const [images, setImages] = useState<string[]>([]);
+
+  useEffect(() => {
+    const loadImages = async () => {
+      const fetchedImages = await fetchBrands();
+      setImages(fetchedImages);
+    };
+
+    loadImages();
+  }, []);
 
   return (
     <FullWidthSlider>
