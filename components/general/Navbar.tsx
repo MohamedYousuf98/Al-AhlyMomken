@@ -15,6 +15,7 @@ const NavbarContainer = styled.nav`
     align-items: center;
     justify-content: center;
     font-size: 17px;
+    
   }
 
   .navbar-nav .nav-link.active {
@@ -99,7 +100,7 @@ const NavbarContainer = styled.nav`
   .contact-button {
     background-color: #00816D;
     border: #00816D;
-    padding: 15px 25px;
+    padding: 11px 20px;
     font-size: 15px;
     border-radius: 84px;
     color: #ffffff;
@@ -208,7 +209,24 @@ const NavbarContainer = styled.nav`
     justify-content: space-between; 
   
   }
+  .StoreLocator {
+    display: block;
+    margin: 0 auto; 
+    max-height: 50px; 
+    width: auto; 
+    margin-right:25px;
+    margin-left:25px;
+  }
+
+  .navbar-nav.ml-auto {cd
+    display: flex;
+    align-items: center;
+  }
+  .media-press{
+    color:#5D6160;
+  }
 `;
+
 
 const Navbar: React.FC = () => {
   const [dropdown, setDropdown] = useState<string | null>(null);
@@ -294,16 +312,16 @@ const Navbar: React.FC = () => {
             <Link href="/" className="nav-link active">Home</Link>
             <Link href="/consumer" className="nav-link">Consumer</Link>
             <div className="dropdown">
-            <Button
-  className="btn dropdown-toggle navbar-dropdown-items"
-  type="button"
-  id="dropdownCompany"
-  aria-expanded={dropdown === 'company'}
-  onClick={() => handleDropdownToggle('company')}
->
-  Company
-</Button>
-{dropdown === 'company' && (
+                    <Button
+          className="btn dropdown-toggle navbar-dropdown-items"
+          type="button"
+          id="dropdownCompany"
+          aria-expanded={dropdown === 'company'}
+          onClick={() => handleDropdownToggle('company')}
+        >
+          Company
+        </Button>
+        {dropdown === 'company' && (
       <div className="dropdown-menu show">
         <div className="dropdown-columns">
           <div className="dropdown-column">
@@ -354,25 +372,28 @@ const Navbar: React.FC = () => {
                     
                   </div>
                   <div className="dropdown-column-business">
-                    <Link href="/" className="dropdown-item"> Media & Press</Link>
-                    <Link href="/" className="dropdown-item ">News</Link>
-                    <Link href="/" className="dropdown-item">Podcasts & Magazines</Link>
+                    <div  className="dropdown-item media-press"> Media & Press</div>
+                    <Link href="/news" className="dropdown-item ">News</Link>
+                    <Link href="/podcastmagazine" className="dropdown-item">Podcasts & Magazines</Link>
                  
                   </div>
                   <div className="dropdown-column-business">
-                    <Link href="/" className="dropdown-item">  <FontAwesomeIcon icon={faCaretRight} /> Careers</Link>
+                    <Link href="/careers" className="dropdown-item">  <FontAwesomeIcon icon={faCaretRight} /> Careers</Link>
                  
                   </div>
                 </div>
               )}
             </div>
-            <Link href="/" className="nav-link">Store Locator</Link>
+         
           </div>
         )}
 
         {/* Right Side (Desktop) */}
         {!isMobile && (
           <div className="navbar-nav ml-auto">
+             <Link href="#">
+             <img src="/store-locator.svg" alt="StoreLocator Icon" className="StoreLocator" />
+            </Link>
             <Link href="/contact">
               <Button className="contact-button">Contact Us</Button>
             </Link>

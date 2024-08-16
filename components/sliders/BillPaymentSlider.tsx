@@ -1,14 +1,13 @@
-'use client';
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 
-// Styled components
+// Styled components 
 const BillPaymentContainer = styled.div`
   overflow: hidden;
 
@@ -38,7 +37,7 @@ const BillPaymentContainer = styled.div`
 
     @media (max-width: 768px) {
       top: 97%;
-   }
+    }
     li {
       margin: 0 14px;
 
@@ -72,10 +71,9 @@ const Title = styled.h1`
   overflow: hidden;
 
   @media (max-width: 768px) {
-     font-size: 28px;
+    font-size: 28px;
   }
 `;
-
 
 const Subtitle = styled.h3`
   font-size: 21px;
@@ -87,7 +85,7 @@ const Subtitle = styled.h3`
 
   @media (max-width: 768px) {
     font-size: 18px;
- }
+  }
 `;
 
 const Paragraph = styled.p`
@@ -99,7 +97,6 @@ const Paragraph = styled.p`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   overflow: hidden;
-
 `;
 
 const ButtonContainer = styled.div`
@@ -116,7 +113,7 @@ const Button = styled.button`
 
   @media (max-width: 768px) {
     font-size: 15px;
- }
+  }
   &.BecomePartner-button {
     background-color: #00816D;
     color: #ffffff;
@@ -143,10 +140,9 @@ const StarsContainer = styled.div`
   display: flex;
   align-items: center;
 
-    .star {
-      color: #FDB615; 
-      margin-right: 5px;
-    }
+  .star {
+    color: #FDB615; 
+    margin-right: 5px;
   }
 
   .star-rating {
@@ -163,7 +159,6 @@ const StarsContainer = styled.div`
   .normal-text {
     color:#5D6160;
   }
- 
 `;
 
 const BackgroundImage = styled.img`
@@ -227,7 +222,7 @@ const Image3 = styled(ForegroundImage)`
 
 const MobileImage = styled.img`
   width: 90% !important;
-  margin-top:15px;
+  margin-top: 15px;
   display: none !important;
 
   @media (max-width: 768px) {
@@ -235,25 +230,30 @@ const MobileImage = styled.img`
   }
 `;
 
-
 const BillPaymentSlide: React.FC<{
   title: string;
   subtitle: string;
   paragraph: string;
-  backgroundImage: string;
-  image1: string;
-  image2: string;
-  image3: string;
-  mobileImage: string;
+  images: {
+    backgroundImage: string;
+    mainImage: string;
+    topLeft: string;
+    bottomLeft: string;
+    mobileImage: string;
+  };
+  btnName1: string;
+  btnName2: string;
+  rate: number;
+  rateFrom: string;
 }> = ({
   title,
   subtitle,
   paragraph,
-  backgroundImage,
-  image1,
-  image2,
-  image3,
-  mobileImage,
+  images,
+  btnName1,
+  btnName2,
+  rate,
+  rateFrom,
 }) => (
   <div className="container-fluid p-100">
     <div className="row billpayment">
@@ -262,76 +262,75 @@ const BillPaymentSlide: React.FC<{
         <Subtitle>{subtitle}</Subtitle>
         <Paragraph>{paragraph}</Paragraph>
         <ButtonContainer>
-          <Button className="BecomePartner-button">Become A Partner</Button>
-          <Button className="ContactUs-button">Contact us</Button>
+          <Button className="BecomePartner-button">{btnName1}</Button>
+          <Button className="ContactUs-button">{btnName2}</Button>
         </ButtonContainer>
         <StarsContainer>
           <div className="stars">
-            <FontAwesomeIcon icon={faStar} className="star" />
-            <FontAwesomeIcon icon={faStar} className="star" />
-            <FontAwesomeIcon icon={faStar} className="star" />
-            <FontAwesomeIcon icon={faStar} className="star" />
-            <FontAwesomeIcon icon={faStar} className="star" />
+            {Array(rate).fill(0).map((_, index) => (
+              <FontAwesomeIcon key={index} icon={faStar} className="star" />
+            ))}
           </div>
-          <span className="star-rating">Rated 5/5 - <span className="normal-text">from over 40 reviews</span></span>
+          <span className="star-rating">
+            Rated {rate}/5 - <span className="normal-text">from {rateFrom}</span>
+          </span>
         </StarsContainer>
       </div>
       <div className="col-md-2"></div>
       <div className="col-md-5 position-relative">
-        <BackgroundImage src={backgroundImage} alt="Background" />
-        <Image1 src={image1} alt="Image 1" />
-        <Image2 src={image2} alt="Image 2" />
-        <Image3 src={image3} alt="Image 3" />
-        <MobileImage src={mobileImage} alt="Mobile Combined Image" />
+        <BackgroundImage src={images.backgroundImage} alt="Background" />
+        <Image1 src={images.mainImage} alt="Image 1" />
+        <Image2 src={images.topLeft} alt="Image 2" />
+        <Image3 src={images.bottomLeft} alt="Image 3" />
+        <MobileImage src={images.mobileImage} alt="Mobile Combined Image" />
       </div>
     </div>
   </div>
 );
 
 const BillPaymentSlider: React.FC = () => {
+  const [slides, setSlides] = useState<any[]>([]);
+
+  useEffect(() => {
+    axios.get('https://d30e66be-80b3-4ca0-82a3-e473ba6138c0.mock.pstmn.io/api/v1/home', {
+      headers: {
+        'Accept-Language': 'en',
+      },
+    })
+    .then(response => {
+      console.log('API Response:', response.data); 
+      setSlides(response.data.data.header); 
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+  }, []);
+
   const settings = {
     dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
+    fade: false,
   };
 
   return (
     <BillPaymentContainer>
       <Slider {...settings}>
-        <BillPaymentSlide
-          title="Recharge & Bill Payments"
-          subtitle="We Make Secure, Seamless & Frictionless Payments An Everyday Convenience."
-          paragraph="We help businesses grow their brands and attract more customers while empowering individuals to lead a hassle-free, time-saving, and limitless state-of-living through a wide range of financial platforms, products & services."
-          backgroundImage="Bg-Billpayment.png"
-          image1="/BillpayMob.png"
-          image2="/grow.PNG"
-          image3="/Receive.PNG"
-          mobileImage="/combinedImg.PNG"
-        />
-        <BillPaymentSlide
-          title="Recharge & Bill Payments"
-          subtitle="We Make Secure, Seamless & Frictionless Payments An Everyday Convenience."
-          paragraph="We help businesses grow their brands and attract more customers while empowering individuals to lead a hassle-free, time-saving, and limitless state-of-living through a wide range of financial platforms, products & services."
-          backgroundImage="Bg-Billpayment.png"
-          image1="/BillpayMob.png"
-          image2="/grow.PNG"
-          image3="/Receive.PNG"
-          mobileImage="/combinedImg.PNG"
-        />
-        <BillPaymentSlide
-          title="Recharge & Bill Payments"
-          subtitle="We Make Secure, Seamless & Frictionless Payments An Everyday Convenience."
-          paragraph="We help businesses grow their brands and attract more customers while empowering individuals to lead a hassle-free, time-saving, and limitless state-of-living through a wide range of financial platforms, products & services."
-          backgroundImage="Bg-Billpayment.png"
-          image1="/BillpayMob.png"
-          image2="/grow.PNG"
-          image3="/Receive.PNG"
-          mobileImage="/combinedImg.PNG"
-        />
+        {slides.map((slide, index) => (
+          <BillPaymentSlide
+            key={index}
+            title={slide.title}
+            subtitle={slide.subtitle}
+            paragraph={slide.paragraph}
+            images={slide.images} 
+            btnName1={slide.btnName1}
+            btnName2={slide.btnName2}
+            rate={slide.rate}
+            rateFrom={slide.rateFrom}
+          />
+        ))}
       </Slider>
     </BillPaymentContainer>
   );

@@ -13,12 +13,11 @@ interface SectionProps {
 
 interface DataProps {
   get_our_story: SectionProps;
-  get_our_Quate: SectionProps;
-  get_Our_mission: SectionProps;
-  get_What_WeDo: SectionProps;
+  get_our_quote: SectionProps;
+  get_what_we_do: SectionProps;
   our_missions: SectionProps;
   our_values: SectionProps;
-  get_What_WeAre: SectionProps;
+  get_what_we_are: SectionProps;
 }
 
 const Ourstory: React.FC = () => {
@@ -29,7 +28,7 @@ const Ourstory: React.FC = () => {
   }, []);
 
   if (!data) {
-    return <p>Loading...</p>;
+    return ;
   }
 
   return (
@@ -58,14 +57,14 @@ const Ourstory: React.FC = () => {
           <Col xs={12} md={6}>
           <QuoteContainer>
               <QuoteIconLeft>“</QuoteIconLeft>
-              <QuoteAuthor>{data.get_our_Quate.title}</QuoteAuthor>
-              <QuoteText>{data.get_our_Quate.description}</QuoteText>
+              <QuoteAuthor>{data.get_our_quote.title}</QuoteAuthor>
+              <QuoteText>{data.get_our_quote.description}</QuoteText>
               <QuoteIconRight>”</QuoteIconRight>
             </QuoteContainer>
           </Col>
           <Col xs={12} md={6}>
             <CatlystImg>
-              <img src={data.get_our_Quate.image} alt={data.get_our_Quate.title} />
+              <img src={data.get_our_quote.image} alt={data.get_our_quote.title} />
             </CatlystImg>
           </Col>
         </Row>
@@ -93,13 +92,13 @@ const Ourstory: React.FC = () => {
         <Row>
           <Col xs={12} md={6}>
             <ImageContainer>
-              <img src={data.get_Our_mission.image} alt={data.get_Our_mission.title} />
+              <img src={data.get_what_we_do.image} alt={data.get_what_we_do.title} />
             </ImageContainer>
           </Col>
           <Col xs={12} md={6}>
             <TextContent>
-              <SectionTitle>{data.get_Our_mission.title}</SectionTitle>
-              <SectionDescription>{data.get_Our_mission.description}</SectionDescription>
+              <SectionTitle>{data.get_what_we_do.title}</SectionTitle>
+              <SectionDescription>{data.get_what_we_do.description}</SectionDescription>
             </TextContent>
           </Col>
         </Row>
@@ -109,13 +108,13 @@ const Ourstory: React.FC = () => {
         <Row>
           <Col xs={12} md={6}>
             <TextContent>
-              <SectionTitle>{data.get_What_WeDo.title}</SectionTitle>
-              <SectionDescription>{data.get_What_WeDo.description}</SectionDescription>
+              <SectionTitle>{data.get_what_we_are.title}</SectionTitle>
+              <SectionDescription>{data.get_what_we_are.description}</SectionDescription>
             </TextContent>
           </Col>
           <Col xs={12} md={6}>
             <ImageContainer>
-              <img src={data.get_What_WeDo.image} alt={data.get_What_WeDo.title} />
+              <img src={data.get_what_we_are.image} alt={data.get_what_we_are.title} />
             </ImageContainer>
           </Col>
         </Row>
@@ -189,7 +188,13 @@ const SectionTitle = styled.h2`
   font-weight:800;
   color: #00816D;
   margin-bottom: 30px;
-  padding-top: 22%;
+  padding-top: 18%;
+  max-width:220px;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const SectionTitleStory = styled.h2`
@@ -206,6 +211,7 @@ font-weight:500;
 color: #5D6160;
 line-height: 1.6;
 margin-bottom: 15px;
+
 `;
 
 const SectionDescription = styled.p`
@@ -213,6 +219,11 @@ const SectionDescription = styled.p`
   font-weight:500;
   color: #5D6160;
   line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 7;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const CatlystImg = styled.div`

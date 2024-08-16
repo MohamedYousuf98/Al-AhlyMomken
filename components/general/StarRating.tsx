@@ -7,7 +7,7 @@ import { faStar } from '@fortawesome/free-solid-svg-icons';
 
 const StarsContainer = styled.div`
   display: flex;
-  align-items: center;
+  
   justify-content: center; /* Center-align the content */
   margin-top: 2rem;
 

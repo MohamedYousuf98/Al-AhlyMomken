@@ -52,14 +52,16 @@ const Subtitle = styled.h2`
 `;
 
 const Description = styled.p`
-  font-size: 16px;
-  font-weight: 400;
-  color: #FFFFFF;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
+font-size: 17px;
+font-weight: 400;
+color: rgba(255, 255, 255, 0.7);
+text-align: center;
+display: -webkit-box;
+-webkit-line-clamp: 4;
+-webkit-box-orient: vertical;
+overflow: hidden;
+text-overflow: ellipsis;
+max-width:1200px;
 `;
 
 const PaymentServices = styled.div`

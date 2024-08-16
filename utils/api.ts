@@ -82,7 +82,7 @@ export const fetchGovernmentData = async (): Promise<any> => {
 
 export const fetchPaymentSolutionData = async (): Promise<any> => {
   try {
-    const response = await axios.get('https://d30e66be-80b3-4ca0-82a3-e473ba6138c0.mock.pstmn.io/api/v1/solution/app', {
+    const response = await axios.get('https://d30e66be-80b3-4ca0-82a3-e473ba6138c0.mock.pstmn.io/api/v1/industries/solutions/app', {
       headers: {
         'Accept-Language': 'en'
       },
@@ -154,7 +154,7 @@ export const fetchData = async () => {
 
 export const fetchBrands = async (): Promise<string[]> => {
   try {
-    const response = await fetch('https://d30e66be-80b3-4ca0-82a3-e473ba6138c0.mock.pstmn.io/api/v1/partners');
+    const response = await fetch('https://d30e66be-80b3-4ca0-82a3-e473ba6138c0.mock.pstmn.io/api/v1/clients');
     const data = await response.json();
     return data.data.brands.map((brand: { image: string }) => brand.image);
   } catch (error) {
@@ -164,3 +164,152 @@ export const fetchBrands = async (): Promise<string[]> => {
 };
 
 
+
+
+
+
+
+const API_BASE_URL = 'https://d30e66be-80b3-4ca0-82a3-e473ba6138c0.mock.pstmn.io/api/v1';
+
+
+interface Author {
+  image: string;
+  name: string;
+}
+
+interface NewsItem {
+  id: string;
+  image: string;
+  home_title: string;
+  home_description: string;
+  author: Author;
+  date: string;
+  category: string;
+}
+
+interface NewsResponse {
+  message: string | null;
+  data: {
+    news: NewsItem[];
+    current_page: number;
+    first_page_url: string;
+    last_page: number;
+    last_page_url: string;
+    next_page_url: string | null;
+    path: string;
+    per_page: number;
+    prev_page_url: string | null;
+    to: number;
+    total: number;
+  };
+  code: number;
+}
+
+export const fetchNews = async (page: number, type: string): Promise<NewsResponse> => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/last-news`, {
+      headers: {
+        'Accept-Language': 'en'
+      },
+      params: {
+        page: page.toString(),
+        type: type
+      }
+    });
+    console.log('API response:', response.data); // Debugging log
+    return response.data; // Return the data object directly
+  } catch (error: any) {
+    if (error.response) {
+      console.error('Error response data:', error.response.data);
+      console.error('Error response status:', error.response.status);
+      console.error('Error response headers:', error.response.headers);
+    } else {
+      console.error('Error message:', error.message);
+    }
+    throw error;
+  }
+};
+
+
+
+
+
+
+//Article
+const NEWS_API_BASE_URL = 'https://d30e66be-80b3-4ca0-82a3-e473ba6138c0.mock.pstmn.io/api/v1/news';
+
+export const getNews = async () => {
+  try {
+    const response = await axios.get(NEWS_API_BASE_URL, {
+      headers: {
+        'Accept-Language': 'en',
+      },
+    });
+
+    return response.data.data;
+  } catch (error) {
+    console.error('Error fetching news:', error);
+    throw error;
+  }
+};
+
+
+// podcast and magazine
+
+export async function fetchPodcasts(page: number): Promise<any> {
+  const response = await fetch(`https://d30e66be-80b3-4ca0-82a3-e473ba6138c0.mock.pstmn.io/api/v1/podcasts?page=${page}`, {
+    headers: {
+      'Accept-Language': 'en',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+
+  const data = await response.json();
+  return data;
+}
+
+
+// Careers
+
+export const fetchVacancies = async (category: string, searchTerm: string) => {
+  try {
+    const response = await fetch(
+      `https://d30e66be-80b3-4ca0-82a3-e473ba6138c0.mock.pstmn.io/api/v1/vacancies?type=${category}&search=${searchTerm}`,
+      {
+        headers: {
+          'Accept-Language': 'en', 
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+
+    const result = await response.json();
+    return result.data;
+  } catch (err: any) {
+    throw new Error(err.message);
+  }
+};
+
+
+// Magazine
+const API_URL = 'https://d30e66be-80b3-4ca0-82a3-e473ba6138c0.mock.pstmn.io/api/v1/magazines';
+
+export const fetchMagazines = async () => {
+  try {
+    const response = await axios.get(API_URL, {
+      headers: {
+        'Accept-Language': 'en'
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching magazines:', error);
+    throw error;
+  }
+};
