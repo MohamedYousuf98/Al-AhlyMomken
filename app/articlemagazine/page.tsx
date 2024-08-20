@@ -1,5 +1,5 @@
 "use client";
-
+import { getNews } from '@/utils/api';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import 'normalize.css';
@@ -8,10 +8,10 @@ import Navbar from '@/components/general/Navbar';
 import ReadyOnline from '@/components/general/ReadyOnline'; 
 import Footer from '@/components/general/Footer'; 
 import ArticleMagazine from '@/components/ArticleMagazine';
-import { getNews } from '@/utils/api';
+
 
 const BodyWrapper = styled.div`
-  background-image: url('/government.webp');
+  background-image: url('/article-bg.webp');
   background-size: cover; 
   background-position: center;
 `;

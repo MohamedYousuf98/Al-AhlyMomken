@@ -261,7 +261,7 @@ const PodcastSection: React.FC = () => {
                 <PodcastImage src={podcast.voice_image} alt={podcast.home_title} />
               </CustomLink>
               <PodcastContentContainer>
-                <CustomLink href="#">
+                <CustomLink href="/podinnerpage">
                   <PodcastContent>
                     <PodcastSubtitle>{podcast.home_image_sub_title}</PodcastSubtitle>
                     <HomeImageTitle>{podcast.home_image_title}</HomeImageTitle>
@@ -269,7 +269,7 @@ const PodcastSection: React.FC = () => {
                 </CustomLink>
               </PodcastContentContainer>
               <PodcastInfo>
-                <CustomLink href="#">
+                <CustomLink href="/podinnerpage">
                   <PodcastTitle>{podcast.home_title}</PodcastTitle>
                 </CustomLink>
                 <PodcastDescription>{podcast.home_description}</PodcastDescription>

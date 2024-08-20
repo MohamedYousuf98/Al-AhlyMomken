@@ -1,10 +1,9 @@
 html {
   font-family: var(--my-font-family), sans-serif;
-}
-
-html {
   scroll-behavior: smooth;
 }
+
+
 .loading-container {
   display: flex;
   justify-content: center;

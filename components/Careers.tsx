@@ -451,7 +451,7 @@ const Home: React.FC = () => {
                         <img src="/briefcase.svg" alt="department" className="career-icon" /> {vacancy.department}
                       </span>
                       <a href={`your_link_here/${vacancy.id}`}>
-                        <CareerIcon href="#">
+                        <CareerIcon href="/vacancydetails">
                           <FontAwesomeIcon icon={faChevronRight} />
                         </CareerIcon>
                       </a>

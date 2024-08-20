@@ -6,6 +6,7 @@ import BusinessButton from '../components/general/BusinessButton';
 import Buttons from '../components/general/Buttons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+
 interface Section {
   id: number;
   image: string;
@@ -47,7 +48,6 @@ const Container = styled.div`
     padding-top: 0px;
    }
 `;
-
 
 
 const Header = styled.div<{ backgroundImage: string }>`

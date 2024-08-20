@@ -11,7 +11,7 @@ import ArticleNews from '@/components/ArticleNews';
 import { getNews } from '@/utils/api';
 
 const BodyWrapper = styled.div`
-  background-image: url('/government.webp');
+  background-image: url('/article-bg.webp');
   background-size: cover; 
   background-position: center;
 `;

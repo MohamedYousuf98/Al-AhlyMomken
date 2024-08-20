@@ -273,14 +273,13 @@ export async function fetchPodcasts(page: number): Promise<any> {
 
 
 // Careers
-
 export const fetchVacancies = async (category: string, searchTerm: string) => {
   try {
     const response = await fetch(
       `https://d30e66be-80b3-4ca0-82a3-e473ba6138c0.mock.pstmn.io/api/v1/vacancies?type=${category}&search=${searchTerm}`,
       {
         headers: {
-          'Accept-Language': 'en', 
+          'Accept-Language': 'en',
         },
       }
     );
@@ -290,6 +289,7 @@ export const fetchVacancies = async (category: string, searchTerm: string) => {
     }
 
     const result = await response.json();
+    console.log('Fetched data:', result); 
     return result.data;
   } catch (err: any) {
     throw new Error(err.message);
@@ -313,3 +313,45 @@ export const fetchMagazines = async () => {
     throw error;
   }
 };
+
+
+
+
+
+// PodcastinnerPage
+const API_URL_Podcast = 'https://d30e66be-80b3-4ca0-82a3-e473ba6138c0.mock.pstmn.io/api/v1/podcasts/1';
+
+export const getPodcastinner = async () => {
+  try {
+    const response = await axios.get(API_URL_Podcast, {
+      headers: {
+        'Accept-Language': 'en',
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching podcast data:', error);
+    return null;
+  }
+};
+
+
+// Vacancies Career
+const API_URL_VACANCY = 'https://d30e66be-80b3-4ca0-82a3-e473ba6138c0.mock.pstmn.io/api/v1/vacancies/1'; 
+
+export const getVacancyDetails = async () => {
+  try {
+    const response = await axios.get(API_URL_VACANCY, {
+      headers: {
+        'Accept-Language': 'en',
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    throw error;
+  }
+};
+
+
