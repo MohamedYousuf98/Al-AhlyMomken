@@ -407,9 +407,9 @@ const Home: React.FC = () => {
   <img src="/category-2.svg" alt="Category Icon" className="icon-left" />
   <select onChange={handleCategoryChange} value={selectedCategory} className="custom-select">
     <option value="" className="all-categories-option">All Categories</option>
-    <option value="category1">Category 1</option>
-    <option value="category2">Category 2</option>
-    <option value="category3">Category 3</option>
+    <option value="category1">Sales</option>
+    <option value="category2">Software Development</option>
+    <option value="category3">Realstate Sales</option>
   </select>
   <img src="/arrow-circle-down.svg" alt="Arrow Icon" className="icon-right" />
 </div>

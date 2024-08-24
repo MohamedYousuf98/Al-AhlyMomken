@@ -11,10 +11,8 @@ import ReadyOnline from '@/components/general/ReadyOnline';
 import Footer from '@/components/general/Footer'; 
 
 const BodyWrapper = styled.div`
-
   background-size: cover; 
   background-position: center;
-  
 `;
 
 const About: React.FC = () => {
@@ -40,7 +38,7 @@ const About: React.FC = () => {
   return (
     <BodyWrapper>
      <Navbar /> 
-      {contactData ? <ContactUs contactData={contactData} /> : <p>Loading...</p>}
+      {contactData ? <ContactUs contactData={contactData} /> : <p></p>}
       <Footer /> 
     </BodyWrapper>
   );
