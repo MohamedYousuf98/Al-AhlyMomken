@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const FooterContainer = styled.footer`
   padding-top: 45px;
   background-color: #171D1C;
-  margin-top:25px;
+  
 `;
 
 const FooterLogo = styled.div`

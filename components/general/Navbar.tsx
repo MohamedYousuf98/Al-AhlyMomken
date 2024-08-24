@@ -228,6 +228,8 @@ const NavbarContainer = styled.nav`
 `;
 
 
+
+
 const Navbar: React.FC = () => {
   const [dropdown, setDropdown] = useState<string | null>(null);
   const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -394,7 +396,7 @@ const Navbar: React.FC = () => {
              <Link href="#">
              <img src="/store-locator.svg" alt="StoreLocator Icon" className="StoreLocator" />
             </Link>
-            <Link href="/contact">
+            <Link href="/contactus">
               <Button className="contact-button">Contact Us</Button>
             </Link>
             <Button className="btn search-icon" onClick={toggleSearch}>
